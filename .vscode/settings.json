@@ -1,0 +1,12 @@
+{
+    "[cpp]": {
+        "editor.defaultFormatter": null,
+        "editor.formatOnSave": false,
+        "editor.formatOnType": false
+    },
+    "[c]": {
+        "editor.defaultFormatter": null,
+        "editor.formatOnSave": false,
+        "editor.formatOnType": false
+    }
+}

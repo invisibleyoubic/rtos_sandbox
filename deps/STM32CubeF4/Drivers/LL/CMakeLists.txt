@@ -27,6 +27,10 @@ target_link_libraries(stm32_ll PUBLIC
     stm32_cmsis
 )
 
+target_compile_definitions(stm32_ll PUBLIC
+    USE_FULL_LL_DRIVER
+)
+
 target_compile_options(stm32_ll PRIVATE
     -mcpu=cortex-m4
     -mthumb
