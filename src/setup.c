@@ -1,6 +1,7 @@
 #include "stm32f4xx_ll_gpio.h"
 #include "stm32f4xx_ll_bus.h"
 #include "stm32f4xx_ll_rcc.h"
+#include "stm32f4xx_ll_system.h"
 #include <stdint.h>
 
 #include "setup.h"
@@ -32,13 +33,15 @@ uint8_t setup_clock(void) {
     while (0u == LL_RCC_HSI_IsReady()) {}
 
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSI);
-    while (LL_RCC_SYS_CLKSOURCE_HSI != LL_RCC_GetSysClkSource()) {}
+    while (LL_RCC_SYS_CLKSOURCE_STATUS_HSI != LL_RCC_GetSysClkSource()) {}
 
     LL_RCC_PLL_Disable();
     while (0u != LL_RCC_PLL_IsReady()) {}
 
     LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
     LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+
+    LL_FLASH_SetLatency(LL_FLASH_LATENCY_3);
 
     // 96 MHz
     LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_16, 192, LL_RCC_PLLP_DIV_2);
@@ -49,7 +52,7 @@ uint8_t setup_clock(void) {
     while (0u == LL_RCC_PLL_IsReady()) {}
 
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-    while (LL_RCC_SYS_CLKSOURCE_PLL != LL_RCC_GetSysClkSource()) {}
+    while (LL_RCC_SYS_CLKSOURCE_STATUS_PLL != LL_RCC_GetSysClkSource()) {}
 
     return 0;
 }
