@@ -5,7 +5,7 @@
 /* Hardware description related definitions. **********************************/
 /******************************************************************************/
 
-#define configCPU_CLOCK_HZ    ( ( unsigned long ) 20000000 )
+#define configCPU_CLOCK_HZ    ( ( unsigned long ) 96000000 )
 
 /******************************************************************************/
 /* Scheduling behaviour related definitions. **********************************/
@@ -18,8 +18,8 @@
 #define configUSE_TICKLESS_IDLE                    1
 #define configMAX_PRIORITIES                       5U
 #define configMINIMAL_STACK_SIZE                   128U
-#define configMAX_TASK_NAME_LEN                    4U
-#define configTICK_TYPE_WIDTH_IN_BITS              TICK_TYPE_WIDTH_64_BITS
+#define configMAX_TASK_NAME_LEN                    16U
+#define configTICK_TYPE_WIDTH_IN_BITS              TICK_TYPE_WIDTH_32_BITS
 #define configIDLE_SHOULD_YIELD                    1
 #define configTASK_NOTIFICATION_ARRAY_ENTRIES      1U
 #define configQUEUE_REGISTRY_SIZE                  0U
@@ -53,10 +53,16 @@
 /* Interrupt nesting behaviour configuration. *********************************/
 /******************************************************************************/
 
-#define configKERNEL_INTERRUPT_PRIORITY          0U
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY     0U
-#define configMAX_API_CALL_INTERRUPT_PRIORITY    0U
+#define configPRIO_BITS                              4U
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY      15U
+#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5U
 
+#define configKERNEL_INTERRUPT_PRIORITY         \
+    ( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << ( 8U - configPRIO_BITS ) )
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY    \
+    ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << ( 8U - configPRIO_BITS ) )
+#define configMAX_API_CALL_INTERRUPT_PRIORITY   \
+    configMAX_SYSCALL_INTERRUPT_PRIORITY
 /******************************************************************************/
 /* Hook and callback function related definitions. ****************************/
 /******************************************************************************/
@@ -101,5 +107,18 @@
 #define INCLUDE_xTaskAbortDelay                1
 #define INCLUDE_xTaskGetHandle                 1
 #define INCLUDE_xTaskResumeFromISR             1
+
+
+#define vPortSVCHandler       SVC_Handler
+#define xPortPendSVHandler    PendSV_Handler
+#define xPortSysTickHandler   SysTick_Handler
+
+#define configASSERT(x)                    \
+    do {                                   \
+        if ((x) == 0) {                    \
+            __asm volatile ("bkpt #0");    \
+            for (;;) {}                    \
+        }                                  \
+    } while (0)
 
 #endif /* FREERTOS_CONFIG_H */

@@ -2,6 +2,7 @@ add_library(free_rtos STATIC
     src/tasks.c
     src/queue.c
     src/list.c
+    src/timers.c
 
     portable/GCC/ARM_CM4F/port.c
     portable/MemMang/heap_4.c
