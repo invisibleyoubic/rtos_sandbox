@@ -11,6 +11,7 @@ add_subdirectory(deps)
 add_executable(${PROJECT_NAME}
     src/main.c
     src/setup.c
+    src/i2c.c
     src/system_stm32f4xx.c
     startup/startup_stm32f411xe.s
 )

@@ -7,7 +7,7 @@ add_library(stm32_ll STATIC
     # Src/stm32f4xx_ll_exti.c
     # Src/stm32f4xx_ll_fmpi2c.c
     Src/stm32f4xx_ll_gpio.c
-    # Src/stm32f4xx_ll_i2c.c
+    Src/stm32f4xx_ll_i2c.c
     # Src/stm32f4xx_ll_lptim.c
     # Src/stm32f4xx_ll_pwr.c
     Src/stm32f4xx_ll_rcc.c

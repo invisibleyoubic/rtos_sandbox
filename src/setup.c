@@ -8,15 +8,24 @@
 
 uint8_t setup_gpio_c(void) {
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-    LL_GPIO_InitTypeDef gpio_c_init_struct = {
-        .Pin = LL_GPIO_PIN_13,
-        .Mode = LL_GPIO_MODE_OUTPUT,
-        .Speed = LL_GPIO_SPEED_FREQ_LOW,
-        .Alternate = LL_GPIO_AF_0,
-        .OutputType = LL_GPIO_OUTPUT_PUSHPULL,
-        .Pull = LL_GPIO_PULL_NO
-    };
-    return (uint8_t)LL_GPIO_Init(GPIOC, &gpio_c_init_struct);
+    
+    LL_GPIO_InitTypeDef gpio_c_init_struct;
+    uint8_t rc = 0;
+    
+    // C13
+    gpio_c_init_struct.Pin = LL_GPIO_PIN_13;
+    gpio_c_init_struct.Mode = LL_GPIO_MODE_OUTPUT;
+    gpio_c_init_struct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+    gpio_c_init_struct.Alternate = LL_GPIO_AF_0;
+    gpio_c_init_struct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    gpio_c_init_struct.Pull = LL_GPIO_PULL_NO;
+
+    LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_13);
+    rc = (uint8_t)LL_GPIO_Init(GPIOC, &gpio_c_init_struct);
+    if (rc != 0)
+        return rc;
+
+    return rc;
 }
 
 uint8_t setup_rcc(void) {

@@ -25,15 +25,24 @@ build: conf
 clean:
 	rm -rf $(BUILD_DIR)
 
-# .PHONY: upload_ocd
-# upload_ocd: build
-# 	openocd \
-# 		-f interface/stlink.cfg \
-# 		-f target/stm32f4x.cfg \
-# 		-c "program $(BUILD_DIR)/rtos_sandbox.bin verify reset exit"
+.PHONY: upload_ocd
+upload_ocd:
+	openocd \
+		-f /usr/share/openocd/scripts/interface/stlink.cfg \
+		-f /usr/share/openocd/scripts/target/stm32f4x.cfg \
+		-c "program build/rtos_sandbox verify reset exit"
+
+.PHONY: reboot
+reboot:
+	openocd \
+		-f /usr/share/openocd/scripts/interface/stlink.cfg \
+		-f /usr/share/openocd/scripts/target/stm32f4x.cfg \
+		-c "init" \
+		-c "reset" \
+		-c "exit"
 
 .PHONY: upload_usb
-upload_usb: build
+upload_usb:
 	sudo dfu-util -a 0 -d 0483:df11 -s 0x08000000:leave -D build/rtos_sandbox.bin
 
 .PHONY: elfsize
