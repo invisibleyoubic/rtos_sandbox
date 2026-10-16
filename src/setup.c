@@ -6,6 +6,40 @@
 
 #include "setup.h"
 
+uint8_t setup_gpio_a(void) {
+    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_USART1);
+
+    LL_GPIO_InitTypeDef gpio_a_init_struct;
+    uint8_t rc = 0;
+
+    // A9
+    gpio_a_init_struct.Pin = LL_GPIO_PIN_9;
+    gpio_a_init_struct.Mode = LL_GPIO_MODE_ALTERNATE;
+    gpio_a_init_struct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+    gpio_a_init_struct.Alternate = LL_GPIO_AF_7;    // tx
+    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
+    gpio_a_init_struct.Pull = LL_GPIO_PULL_UP;
+
+    rc = (uint8_t)LL_GPIO_Init(GPIOA, &gpio_a_init_struct);
+    if (0 != rc)
+        return rc;
+
+    // A10
+    gpio_a_init_struct.Pin = LL_GPIO_PIN_10;
+    gpio_a_init_struct.Mode = LL_GPIO_MODE_ALTERNATE;
+    gpio_a_init_struct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+    gpio_a_init_struct.Alternate = LL_GPIO_AF_7;    // rx
+    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
+    gpio_a_init_struct.Pull = LL_GPIO_PULL_NO;
+
+    rc = (uint8_t)LL_GPIO_Init(GPIOA, &gpio_a_init_struct);
+    if (0 != rc)
+        return rc;
+
+    return rc;
+}
+
 uint8_t setup_gpio_b(void) {
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C1);
@@ -97,6 +131,7 @@ uint8_t setup_clock(void) {
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
     while (LL_RCC_SYS_CLKSOURCE_STATUS_PLL != LL_RCC_GetSysClkSource()) {}
 
+    // I2C
     LL_RCC_PLLI2S_Enable();
     while (0u == LL_RCC_PLLI2S_IsReady()) {}
 
