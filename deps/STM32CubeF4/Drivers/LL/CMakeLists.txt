@@ -15,7 +15,7 @@ add_library(stm32_ll STATIC
     # Src/stm32f4xx_ll_rtc.c
     # Src/stm32f4xx_ll_spi.c
     # Src/stm32f4xx_ll_tim.c
-    # Src/stm32f4xx_ll_usart.c
+    Src/stm32f4xx_ll_usart.c
     Src/stm32f4xx_ll_utils.c
 )
 

@@ -18,7 +18,7 @@ uint8_t setup_gpio_a(void) {
     gpio_a_init_struct.Mode = LL_GPIO_MODE_ALTERNATE;
     gpio_a_init_struct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     gpio_a_init_struct.Alternate = LL_GPIO_AF_7;    // tx
-    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
+    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     gpio_a_init_struct.Pull = LL_GPIO_PULL_UP;
 
     rc = (uint8_t)LL_GPIO_Init(GPIOA, &gpio_a_init_struct);
@@ -30,8 +30,8 @@ uint8_t setup_gpio_a(void) {
     gpio_a_init_struct.Mode = LL_GPIO_MODE_ALTERNATE;
     gpio_a_init_struct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     gpio_a_init_struct.Alternate = LL_GPIO_AF_7;    // rx
-    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
-    gpio_a_init_struct.Pull = LL_GPIO_PULL_NO;
+    gpio_a_init_struct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    gpio_a_init_struct.Pull = LL_GPIO_PULL_UP;
 
     rc = (uint8_t)LL_GPIO_Init(GPIOA, &gpio_a_init_struct);
     if (0 != rc)
